@@ -143,7 +143,7 @@ class FieldBit(IntEnum):
     # ── 0x77-0x8F ──
     PREV_AMOUNT            = 0x7B, '<f', '昨成交额(元)'
     AUCTION_VOL_RATIO      = 0x7A, '<f', '竞价昨比'
-    RECENT_INDICATOR       = 0x7D, '<f', '近日指标提示'  # 整数码以float存储: 6=KDJ死叉 11=ETF类 51/52/91=个股类 92=阶段放量
+    RECENT_INDICATOR       = 0x7D, '<f', '近日指标提示'  # 整数码以float存储, 见 RecentIndicator 枚举 (.is_bull/.is_bear/.chinese)
     # 0x7E-0x7F 保留
     BID3_PRICE             = 0x80, '<f', '买三价'
     BID4_PRICE             = 0x81, '<f', '买四价'

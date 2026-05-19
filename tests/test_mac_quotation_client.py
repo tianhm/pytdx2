@@ -4,6 +4,7 @@ import pandas as pd
 from opentdx.utils.help import industry_to_board_symbol, ah_code_to_symbol, lot_size_to_symbol
 from datetime import time
 from opentdx.utils.bitmap import FIELD_BITMAP_MAP, FieldBit, PresetField
+from opentdx.enums import RecentIndicator
 
 class TestMacQuotationClientLogin:
     """登录"""
@@ -648,3 +649,74 @@ class TestMacQuotationClientSymbolTransaction:
         if result:
             prices = [tx['price'] for tx in result]
             assert min(prices) > 0
+
+
+class TestRecentIndicator:
+    """RECENT_INDICATOR 枚举使用示例"""
+
+    def test_all_enum_values_have_chinese_name(self):
+        for v in RecentIndicator:
+            c = v.display_name
+            assert c and not c.startswith('未知'), f'{v} chinese name missing'
+
+    def test_chinese_roundtrip(self):
+        for v in RecentIndicator:
+            assert RecentIndicator[v.name] == v
+
+    def test_lookup_by_value(self):
+        assert RecentIndicator(1).display_name == 'MACD金叉'
+        assert RecentIndicator(2).display_name == 'MACD死叉'
+        assert RecentIndicator(92).display_name == '阶段放量'
+
+    def test_enum_members_count(self):
+        assert len(RecentIndicator) == 25
+
+    def test_decode_from_quotes(self, mqc: macQuotationClient):
+        """从实时行情解析 RECENT_INDICATOR 并映射为枚举"""
+        result = mqc.get_symbol_quotes(
+            [(MARKET.SZ, '300059')],
+            fields=PresetField.DEBUG,
+        )
+        stocks = result['stocks'] if isinstance(result, dict) and 'stocks' in result else result
+        ri = stocks[0].get('recent_indicator', 0)
+        if ri:
+            indicator = RecentIndicator(int(ri))
+            print(f"\n  300059 东方财富: code={int(ri)} → {indicator.name} ({indicator.display_name})")
+            assert isinstance(indicator, RecentIndicator)
+
+    def test_polarity_classification(self):
+        """验证所有枚举值的多空分类"""
+        for v in RecentIndicator:
+            assert v.polarity in ('多头', '空头', '中性')
+
+        bull = [v for v in RecentIndicator if v.is_bull]
+        bear = [v for v in RecentIndicator if v.is_bear]
+
+        assert len(bull) >= 10, f"多头信号不足: {len(bull)}"
+        assert len(bear) >= 10, f"空头信号不足: {len(bear)}"
+
+        assert RecentIndicator.MACD_GOLDEN.is_bull
+        assert RecentIndicator.BULL_ARRANGE.is_bull
+        assert RecentIndicator.MACD_DEATH.is_bear
+        assert RecentIndicator.BEAR_ARRANGE.is_bear
+
+    def test_categorize_stocks_by_indicator(self, mqc: macQuotationClient):
+        """按 RECENT_INDICATOR 对多只股票分类"""
+        targets = [
+            (MARKET.SZ, '300059'),
+            (MARKET.SH, '601166'),
+            (MARKET.SZ, '002714'),
+        ]
+        result = mqc.get_symbol_quotes(targets, fields=PresetField.DEBUG)
+        stocks = result['stocks'] if isinstance(result, dict) and 'stocks' in result else result
+
+        categories = {}
+        for s in stocks:
+            ri = s.get('recent_indicator', 0)
+            if ri:
+                ind = RecentIndicator(int(ri))
+                categories.setdefault(ind, []).append(s['code'])
+
+        for ind, codes in categories.items():
+            print(f"\n  {ind.name:20s} ({ind.display_name}) [{ind.polarity}]: {', '.join(codes)}")
+        assert len(categories) > 0
