@@ -667,9 +667,11 @@ class TestRecentIndicator:
         assert RecentIndicator(1).display_name == 'MACD金叉'
         assert RecentIndicator(2).display_name == 'MACD死叉'
         assert RecentIndicator(92).display_name == '阶段放量'
+        assert RecentIndicator(80).display_name == '价量齐升'
+        assert RecentIndicator(94).display_name == '顶部放量'
 
     def test_enum_members_count(self):
-        assert len(RecentIndicator) == 25
+        assert len(RecentIndicator) == 27
 
     def test_decode_from_quotes(self, mqc: macQuotationClient):
         """从实时行情解析 RECENT_INDICATOR 并映射为枚举"""

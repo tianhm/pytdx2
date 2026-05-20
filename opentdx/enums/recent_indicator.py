@@ -7,7 +7,7 @@ class RecentIndicator(IntEnum):
     """
     近日指标提示（对应 RECENT_INDICATOR 字段 0x7D，整数码以 float 存储）。
 
-    基于 /tdx/tdx.csv (2026-05-19) 全量分组交叉验证（每组最多50样本，100%一致）。
+    基于 /tdx/tdx.csv (2026-05-19) + /tdx/20260520.csv 全量分组交叉验证（每组最多50样本，100%一致）。
 
     用法::
 
@@ -26,8 +26,8 @@ class RecentIndicator(IntEnum):
         ind.is_bear    # True / False
 
         # 按多空分类筛选
-        bull_signals = [v for v in RecentIndicator if v.is_bull]
-        bear_signals = [v for v in RecentIndicator if v.is_bear]
+        bull_signals = [v for v in RecentIndicator if v.is_bull]  # 13个
+        bear_signals = [v for v in RecentIndicator if v.is_bear]  # 13个
     """
 
     MACD_GOLDEN      = 1   # MACD金叉
@@ -48,11 +48,13 @@ class RecentIndicator(IntEnum):
     HIGH_RETREAT     = 61  # 高位回落
     SURGE_UP         = 70  # 放量上攻
     SURGE_DOWN       = 71  # 放量下挫
+    PRICE_VOL_UP     = 80  # 价量齐升
     PRICE_VOL_DOWN   = 81  # 价量齐跌
     MILD_UP          = 90  # 温和放量上攻
     MILD_DOWN        = 91  # 温和放量下跌
     PHASE_SURGE      = 92  # 阶段放量
     PHASE_SHRINK     = 93  # 阶段缩量
+    TOP_SURGE        = 94  # 顶部放量
     TOP_SHRINK       = 95  # 顶部缩量
     BOTTOM_SHRINK    = 97  # 底部缩量
 
@@ -73,8 +75,8 @@ class RecentIndicator(IntEnum):
         return self.polarity == '空头'
 
 
-_BULL = {1, 5, 10, 20, 31, 33, 50, 60, 70, 90, 92, 97}     # MACD黄金,EXPMA金,KDJ金,BOLL上穿,多头,均线粘合,向上突,底部反转,放量上攻,温和放量上,阶段放量,底部缩量
-_BEAR = {2, 6, 11, 21, 32, 51, 61, 71, 81, 91, 93, 95}   # MACD死,EXPMA死,KDJ死,BOLL跌破,空头,向下突,高位回落,放量下挫,价量齐跌,温和放量下,阶段缩量,顶部缩量
+_BULL = {1, 5, 10, 20, 31, 33, 50, 60, 70, 80, 90, 92, 97}     # MACD金,EXPMA金,KDJ金,BOLL上穿,多头,均线粘合,向上突,底部反转,放量上攻,价量齐升,温和放量上,阶段放量,底部缩量
+_BEAR = {2, 6, 11, 21, 32, 51, 61, 71, 81, 91, 93, 94, 95}   # MACD死,EXPMA死,KDJ死,BOLL跌破,空头,向下突,高位回落,放量下挫,价量齐跌,温和放量下,阶段缩量,顶部放量,顶部缩量
 
 _POLARITY = {v: '多头' for v in _BULL} | {v: '空头' for v in _BEAR}
 
@@ -97,11 +99,13 @@ _CHINESE = {
     61: '高位回落',
     70: '放量上攻',
     71: '放量下挫',
-    81: '价量齐跌',
+    80:  '价量齐升',
+    81:  '价量齐跌',
     90: '温和放量上攻',
     91: '温和放量下跌',
     92: '阶段放量',
-    93: '阶段缩量',
-    95: '顶部缩量',
+    93:  '阶段缩量',
+    94:  '顶部放量',
+    95:  '顶部缩量',
     97: '底部缩量',
 }

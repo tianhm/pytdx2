@@ -6,7 +6,7 @@
 
 ### Added
 
-- **近日指标提示枚举**：`RecentIndicator` 枚举（0x7D），含 25 个技术形态值，支持 `is_bull`/`is_bear` 多空分类和 `chinese` 中文描述
+- **近日指标提示枚举**：`RecentIndicator` 枚举（0x7D），含 27 个技术形态值，支持 `is_bull`/`is_bear` 多空分类和 `display_name` 中文描述
 
 ## [0.2.5]
 
