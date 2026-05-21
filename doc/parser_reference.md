@@ -253,7 +253,7 @@
 | 0x23 | lot_size | `<I` | 每手股数 |
 | 0x25 | speed_pct | `<f` | 涨速 |
 | 0x26 | avg_price | `<f` | 均价 |
-| 0x27 | ipov | `<f` | IPOV |
+| 0x27 | iopv | `<f` | IOPV |
 | 0x28 | pe_ttm_vol_related | `<f` | 市盈率TTM（与vol相关） |
 | 0x29 | ex_price_placeholder | `<f` | 收盘价占位（与amount相关） |
 | 0x2A | operating_revenue | `<f` | 营业收入(万) |

@@ -251,7 +251,7 @@ def unpack_futures(data, code_len: int = 23):
         }
 
 def unpack_by_type(unusual_type: int, data: bytearray) -> tuple[str, str, int, float, float, float]:
-    v1, v2, v3, v4 = struct.unpack('<B3f', data)
+    v1, v2, v3, v4 = struct.unpack('<B2fI', data)
     desc = ""
     val = ""
     if unusual_type == 0x03:

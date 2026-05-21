@@ -68,10 +68,10 @@ class FieldBit(IntEnum):
     SELL_PRICE_LIMIT       = 0x21, '<f', '跌停价'
     PRICE_DECIMAL_INFO      = 0x22, '<I', '价格精度标志'  # A股=0, 港美股=15
     LOT_SIZE               = 0x23, '<I', '所属地区板块(A股)/每手股数(港股)'
-    PRE_IPOV               = 0x24, '<f', '昨IPOV'
+    PRE_IOPV               = 0x24, '<f', '昨IOPV'
     SPEED_PCT              = 0x25, '<f', '涨速'
     AVG_PRICE              = 0x26, '<f', '均价'
-    IPOV                   = 0x27, '<f', 'IPOV'
+    IOPV                   = 0x27, '<f', 'IOPV'
     PE_TTM_VOL_RELATED     = 0x28, '<f', '前参考价(美股适用)'  # 美股接近close; A股返回异常值
     EX_PRICE_PLACEHOLDER   = 0x29, '<f', '前金额参考'  # A股个股为百万级金额; 美股接近close; 指数ETF为0
     OPERATING_REVENUE      = 0x2A, '<f', '营业收入(万)'
@@ -225,7 +225,7 @@ class PresetField(Enum):
                FieldBit.NET_ASSETS, FieldBit.SECURITY_TYPE_PRICE, FieldBit.TOTAL_MARKET_CAP_AB, FieldBit.PE_DYNAMIC,
                FieldBit.LOT_SIZE_INFO, FieldBit.DIVIDEND_YIELD, FieldBit.LAST_VOLUME,
                FieldBit.TURNOVER, FieldBit.STOCK_TAG_FLAGS, FieldBit.DECIMAL_POINT, FieldBit.BUY_PRICE_LIMIT,
-               FieldBit.SELL_PRICE_LIMIT, FieldBit.PRICE_DECIMAL_INFO, FieldBit.LOT_SIZE, FieldBit.PRE_IPOV,
+               FieldBit.SELL_PRICE_LIMIT, FieldBit.PRICE_DECIMAL_INFO, FieldBit.LOT_SIZE, FieldBit.PRE_IOPV,
                 FieldBit.SPEED_PCT, FieldBit.FLAG_KCB, FieldBit.PE_TTM, FieldBit.PE_STATIC, FieldBit.MAIN_NET_AMOUNT,
                FieldBit.VOL_SPEED_PCT, FieldBit.SHORT_TURNOVER_PCT, FieldBit.CIRCULATING_CAPITAL_Z)
     DEBUG = (-1, '', '调试用全字段')  # 特例: 请求全字段(位图全1), 仅用于测试和调试, 不保证向后兼容 
