@@ -2,6 +2,12 @@
 
 所有值得关注的变化均记录于此。格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [Unreleased]
+
+### Added
+
+- **近日指标提示枚举**：`RecentIndicator` 枚举（0x7D），含 27 个技术形态值，支持 `is_bull`/`is_bear` 多空分类和 `display_name` 中文描述
+
 ## [0.2.5]
 
 ### Added
